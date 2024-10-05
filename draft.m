@@ -22,9 +22,9 @@ for i = [1:iteratins ]
     p = zeros(4,1);
     state = P(end, :);
 
-%     First population is modelled as yp = y*(1 - y/K)
+%     First population is modelled as yp = r*y*(1 - y/K)
     p(2) = r*state(1)*(1 - state(1)/K1); % first derivative of pop 1
-%     First population is modelled as yp = y*(1 - y/K), but here K is a linearly decreasing function
+%     First population is modelled as yp = r*y*(1 - y/K), but here K is a linearly decreasing function
     p(4) = r*state(3)*(1 - state(3)/K2); % first derivative of pop 2
     if p(4) < 0
         p(4) = 0;
@@ -46,10 +46,10 @@ for i = [1:iteratins ]
 end
 
 hold on
-plot(time,P(:,1),'Linewidth',3)
-plot(time,P(:,3),'Linewidth',3)
-plot(time,P(:,2),'Linewidth',3)
-plot(time,P(:,4),'Linewidth',3)
+plot(time,P(:,1),'Linewidth',3,'color','blue')
+plot(time,P(:,3),'Linewidth',3,'color','red')
+plot(time,P(:,2),'--','Linewidth',2,'color','blue')
+plot(time,P(:,4),'--','Linewidth',2,'color','red')
 grid on
 title("Evolution of infections amongst a population")
 
