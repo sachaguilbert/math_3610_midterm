@@ -5,31 +5,31 @@ clear
 
 % Define the system of ODEs in a separate file named myThreeODE.m
 function dydt = myODE(t, y)
-    S_1 = y(1)-2.5;
-    S_2 = y(2)-2.5;
-    S_3 = y(3)-2.5;
-    S_4 = y(4)-2.5;
+    S_1 = y(1);
+    S_2 = y(2);
+    S_3 = y(3);
+    S_4 = y(4)-100;
     I_1 = y(5);
     I_2 = y(6);
     I_3 = y(7);
     I_4 = y(8);
-    R_1 = y(9)+2.5;
-    R_2 = y(10)+2.5;
-    R_3 = y(11)+2.5;
-    R_4 = y(12)+2.5;
+    R_1 = y(9);
+    R_2 = y(10);
+    R_3 = y(11);
+    R_4 = y(12)+100;
     D_1 = y(13);
     D_2 = y(14);
     D_3 = y(15);
     D_4 = y(16);
-    beta_1 = 0.0002;
-    beta_2 = 0.0002;
-    beta_3 = 0.00008;
-    beta_4 = 0.00001;
-    gamma_1 = 0.995/5;
-    gamma_2 = 0.99/5;
-    gamma_3 = 0.96/5;
-    gamma_4 = 0.9/5;
-    nat_death_1 = 0.0015/365;
+    beta_1 = 2.8e-4*2.5; % infection likelihood
+    beta_2 = 1.87e-5*2.5;
+    beta_3 = 9.35e-6*2.5;
+    beta_4 = 4.67e-6*2.5;
+    gamma_1 = 0.9987/5; % recovery rate from Omega
+    gamma_2 = 0.997/5;
+    gamma_3 = 0.957/5;
+    gamma_4 = 0.886/5;
+    nat_death_1 = 0.0015/365; % natural death rate
     nat_death_2 = 0.0016/365;
     nat_death_3 = 0.0076/365;
     nat_death_4 = 0.0755/365;
@@ -53,8 +53,9 @@ function dydt = myODE(t, y)
 end
 
 % Main script
-tspan = [0 100];     % Time span
-y0 = [26500; 26500; 26500; 26500; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
+tspan = [0 300];     % Time span
+N = 107000
+y0 = [N*0.2; N*0.35; N*0.3; N*0.15; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
 
 % Solve the system of ODEs
 [t, y] = ode23(@myODE, tspan, y0);
@@ -62,23 +63,25 @@ y0 = [26500; 26500; 26500; 26500; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     %
 % Plot the results
 figure;
 hold on;
-plot(t, y(:, 1), 'b', 'DisplayName', 'S_1 (Susceptible 1)');
-plot(t, y(:, 2), 'g', 'DisplayName', 'S_2 (Susceptible 2)');
-plot(t, y(:, 3), 'r', 'DisplayName', 'S_3 (Susceptible 3)');
-plot(t, y(:, 4), 'c', 'DisplayName', 'S_4 (Susceptible 4)');
-plot(t, y(:, 5), 'b--', 'DisplayName', 'I_1 (Infected 1)');
-plot(t, y(:, 6), 'g--', 'DisplayName', 'I_2 (Infected 2)');
-plot(t, y(:, 7), 'r--', 'DisplayName', 'I_3 (Infected 3)');
-plot(t, y(:, 8), 'c--', 'DisplayName', 'I_4 (Infected 4)');
-plot(t, y(:, 9), 'b:', 'DisplayName', 'R_1 (Recovered 1)');
-plot(t, y(:, 10), 'g:', 'DisplayName', 'R_2 (Recovered 2)');
-plot(t, y(:, 11), 'r:', 'DisplayName', 'R_3 (Recovered 3)');
-plot(t, y(:, 12), 'c:', 'DisplayName', 'R_4 (Recovered 4)');
-plot(t, y(:, 13), 'b.-', 'DisplayName', 'R_1 (Dead 1)');
-plot(t, y(:, 14), 'g.-', 'DisplayName', 'R_2 (Dead 2)');
-plot(t, y(:, 15), 'r.-', 'DisplayName', 'R_3 (Dead 3)');
-plot(t, y(:, 16), 'c.-', 'DisplayName', 'R_4 (Dead 4)');
+% plot(t, y(:, 1), 'b','Linewidth',2, 'DisplayName', 'S_1 (Susceptible 1)');
+% plot(t, y(:, 2), 'g', 'Linewidth', 2, 'DisplayName', 'S_2 (Susceptible 2)');
+% plot(t, y(:, 3), 'r', 'Linewidth', 2, 'DisplayName', 'S_3 (Susceptible 3)');
+% plot(t, y(:, 4), 'c', 'Linewidth', 2, 'DisplayName', 'S_4 (Susceptible 4)');
+% plot(t, y(:, 5), 'b--', 'Linewidth', 2, 'DisplayName', 'I_1 (Infected 1)');
+% plot(t, y(:, 6), 'g--', 'Linewidth', 2, 'DisplayName', 'I_2 (Infected 2)');
+% plot(t, y(:, 7), 'r--', 'Linewidth', 2, 'DisplayName', 'I_3 (Infected 3)');
+% plot(t, y(:, 8), 'c--', 'Linewidth', 2, 'DisplayName', 'I_4 (Infected 4)');
+% plot(t, y(:, 9), 'b:', 'Linewidth', 2, 'DisplayName', 'R_1 (Recovered 1)');
+% plot(t, y(:, 10), 'g:', 'Linewidth', 2, 'DisplayName', 'R_2 (Recovered 2)');
+% plot(t, y(:, 11), 'r:', 'Linewidth', 2, 'DisplayName', 'R_3 (Recovered 3)');
+% plot(t, y(:, 12), 'c:', 'Linewidth', 2, 'DisplayName', 'R_4 (Recovered 4)');
+plot(t, y(:, 13), 'b-.', 'Linewidth', 2, 'DisplayName', 'D_1 (Dead 1)');
+plot(t, y(:, 14), 'g-.', 'Linewidth', 2, 'DisplayName', 'D_2 (Dead 2)');
+plot(t, y(:, 15), 'r-.', 'Linewidth', 2, 'DisplayName', 'D_3 (Dead 3)');
+plot(t, y(:, 16), 'c-.', 'Linewidth', 2, 'DisplayName', 'D_4 (Dead 4)');
 hold off;
+
+y(:, 16)
 
 xlabel('Time');
 ylabel('Population');
