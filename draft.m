@@ -12,13 +12,14 @@ p2_dot_0 = 0;
 
 P = [p1_0, p1_dot_0, p2_0, p2_dot_0];
 
-r = 1;
+r = 0.09;
 dt = 0.01;
-iteratins = 2000;
+days = 300;
+iterations = days/dt;
 t = 0;
 time = [t];
 
-for i = [1:iteratins ]
+for i = [1:iterations]
     p = zeros(4,1);
     state = P(end, :);
 
@@ -29,7 +30,9 @@ for i = [1:iteratins ]
     if p(4) < 0
         p(4) = 0;
     end
-
+    if K2 < 1
+        p(4) = 0;
+    end
     p(1) = state(1) + p(2)*dt;
     p(3) = state(3) + p(4)*dt;
 
@@ -40,7 +43,7 @@ for i = [1:iteratins ]
 %     disp(" ");
     P = [P; p'];
 
-    K2 = K2 - vaccination_rate*dt;
+    K2 = K2 - vaccination_rate*dt/30;
     t = t + dt;
     time = [time; t];
 end
@@ -54,6 +57,6 @@ grid on
 title("Evolution of infections amongst a population")
 
 
-xlabel("Time in months")
+xlabel("Time in days")
 ylabel("Infected population")
 legend("No vaccines", "0.5 vaccines per iterations", "Infection rate for no vaccines", "Infection rate for vaccinated pop")
