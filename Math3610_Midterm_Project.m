@@ -46,10 +46,10 @@ function dydt = myODE(t, y)
         gamma_2*I_2 - nat_death_2*R_2;
         gamma_3*I_3 - nat_death_3*R_3;
         gamma_4*I_4 - nat_death_4*R_4;
-        nat_death_1*(S_1+I_1+R_1)+(1-gamma_1*5)*I_1;
-        nat_death_2*(S_2+I_2+R_2)+(1-gamma_2*5)*I_2;
-        nat_death_3*(S_3+I_3+R_3)+(1-gamma_3*5)*I_3;
-        nat_death_4*(S_4+I_4+R_4)+(1-gamma_4*5)*I_4];
+        nat_death_1*(S_1+I_1+R_1)+((1-gamma_1*5)/5)*I_1;
+        nat_death_2*(S_2+I_2+R_2)+((1-gamma_2*5)/5)*I_2;
+        nat_death_3*(S_3+I_3+R_3)+((1-gamma_3*5)/5)*I_3;
+        nat_death_4*(S_4+I_4+R_4)+((1-gamma_4*5)/5)*I_4];
 end
 
 % Main script
@@ -63,18 +63,18 @@ y0 = [N*0.2; N*0.35; N*0.3; N*0.15; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];    
 % Plot the results
 figure;
 hold on;
-% plot(t, y(:, 1), 'b','Linewidth',2, 'DisplayName', 'S_1 (Susceptible 1)');
-% plot(t, y(:, 2), 'g', 'Linewidth', 2, 'DisplayName', 'S_2 (Susceptible 2)');
-% plot(t, y(:, 3), 'r', 'Linewidth', 2, 'DisplayName', 'S_3 (Susceptible 3)');
-% plot(t, y(:, 4), 'c', 'Linewidth', 2, 'DisplayName', 'S_4 (Susceptible 4)');
-% plot(t, y(:, 5), 'b--', 'Linewidth', 2, 'DisplayName', 'I_1 (Infected 1)');
-% plot(t, y(:, 6), 'g--', 'Linewidth', 2, 'DisplayName', 'I_2 (Infected 2)');
-% plot(t, y(:, 7), 'r--', 'Linewidth', 2, 'DisplayName', 'I_3 (Infected 3)');
-% plot(t, y(:, 8), 'c--', 'Linewidth', 2, 'DisplayName', 'I_4 (Infected 4)');
-% plot(t, y(:, 9), 'b:', 'Linewidth', 2, 'DisplayName', 'R_1 (Recovered 1)');
-% plot(t, y(:, 10), 'g:', 'Linewidth', 2, 'DisplayName', 'R_2 (Recovered 2)');
-% plot(t, y(:, 11), 'r:', 'Linewidth', 2, 'DisplayName', 'R_3 (Recovered 3)');
-% plot(t, y(:, 12), 'c:', 'Linewidth', 2, 'DisplayName', 'R_4 (Recovered 4)');
+plot(t, y(:, 1), 'b','Linewidth',2, 'DisplayName', 'S_1 (Susceptible 1)');
+plot(t, y(:, 2), 'g', 'Linewidth', 2, 'DisplayName', 'S_2 (Susceptible 2)');
+plot(t, y(:, 3), 'r', 'Linewidth', 2, 'DisplayName', 'S_3 (Susceptible 3)');
+plot(t, y(:, 4), 'c', 'Linewidth', 2, 'DisplayName', 'S_4 (Susceptible 4)');
+plot(t, y(:, 5), 'b--', 'Linewidth', 2, 'DisplayName', 'I_1 (Infected 1)');
+plot(t, y(:, 6), 'g--', 'Linewidth', 2, 'DisplayName', 'I_2 (Infected 2)');
+plot(t, y(:, 7), 'r--', 'Linewidth', 2, 'DisplayName', 'I_3 (Infected 3)');
+plot(t, y(:, 8), 'c--', 'Linewidth', 2, 'DisplayName', 'I_4 (Infected 4)');
+plot(t, y(:, 9), 'b:', 'Linewidth', 2, 'DisplayName', 'R_1 (Recovered 1)');
+plot(t, y(:, 10), 'g:', 'Linewidth', 2, 'DisplayName', 'R_2 (Recovered 2)');
+plot(t, y(:, 11), 'r:', 'Linewidth', 2, 'DisplayName', 'R_3 (Recovered 3)');
+plot(t, y(:, 12), 'c:', 'Linewidth', 2, 'DisplayName', 'R_4 (Recovered 4)');
 plot(t, y(:, 13), 'b-.', 'Linewidth', 2, 'DisplayName', 'D_1 (Dead 1)');
 plot(t, y(:, 14), 'g-.', 'Linewidth', 2, 'DisplayName', 'D_2 (Dead 2)');
 plot(t, y(:, 15), 'r-.', 'Linewidth', 2, 'DisplayName', 'D_3 (Dead 3)');
