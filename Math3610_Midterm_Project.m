@@ -4,7 +4,7 @@ clc
 clear
 
 % Define the system of ODEs in a separate file named myThreeODE.m
-function dydt = myODE(t, y)
+function dydt = ODE_equations(t, y)
     S_1 = y(1);
     S_2 = y(2);
     S_3 = y(3);
@@ -21,13 +21,13 @@ function dydt = myODE(t, y)
     D_2 = y(14);
     D_3 = y(15);
     D_4 = y(16);
-    beta_1 = 2.5e-6; % infection likelihood 2.8e-4*2.5
+    beta_1 = 7e-6; % infection likelihood 2.8e-4*2.5
     beta_2 = 5e-6; %1.87e-5*2.5
     beta_3 = 3e-6; %9.35e-6*2.5
-    beta_4 = 5e-7; % 4.67e-6*2.5
-    gamma_1 = 0.9987/5; % recovery rate from Omega
+    beta_4 = 1e-6; % 4.67e-6*2.5
+    gamma_1 = 0.999/5; % recovery rate from Omega
     gamma_2 = 0.997/5;
-    gamma_3 = 0.957/5;
+    gamma_3 = 0.986/5;
     gamma_4 = 0.886/5;
     nat_death_1 = 0; %0.0015/365; % natural death rate
     nat_death_2 = 0; %0.0016/365;
@@ -72,7 +72,7 @@ N = 107000;
 y0 = [N*0.2; N*0.35; N*0.3; N*0.15; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
 
 % Solve the system of ODEs
-[t, y] = ode23(@myODE, tspan, y0);
+[t, y] = ode23(@ODE_equations, tspan, y0);
 
 % Plot the results
 figure;
