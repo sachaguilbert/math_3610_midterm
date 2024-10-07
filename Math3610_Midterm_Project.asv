@@ -4,7 +4,7 @@ clc
 clear
 
 % Define the system of ODEs in a separate file named myThreeODE.m
-function dydt = myODE(t, y)
+function dydt = ODE_equations(t, y)
     S_1 = y(1);
     S_2 = y(2);
     S_3 = y(3);
@@ -25,14 +25,14 @@ function dydt = myODE(t, y)
     beta_2 = 5e-6; %1.87e-5*2.5
     beta_3 = 3e-6; %9.35e-6*2.5
     beta_4 = 5e-7; % 4.67e-6*2.5
-    gamma_1 = 0.9987/5; % recovery rate from Omega
+    gamma_1 = 0.999/5; % recovery rate from Omega
     gamma_2 = 0.997/5;
-    gamma_3 = 0.957/5;
+    gamma_3 = 0.994/5;
     gamma_4 = 0.886/5;
-    nat_death_1 = 0.0015/365; % natural death rate
-    nat_death_2 = 0.0016/365;
-    nat_death_3 = 0.0076/365;
-    nat_death_4 = 0.0755/365;
+    nat_death_1 = 0; %0.0015/365; % natural death rate
+    nat_death_2 = 0; %0.0016/365;
+    nat_death_3 = 0; %0.0076/365;
+    nat_death_4 = 0;%0.0755/365;
     I = I_1 + I_2 + I_3 + I_4;
     V = 100;
     V_1 = 0;
@@ -57,9 +57,9 @@ function dydt = myODE(t, y)
         beta_3*I*S_3 - gamma_3*I_3 - nat_death_3*I_3;
         beta_4*I*S_4 - gamma_4*I_4 - nat_death_4*I_4;
         gamma_1*I_1 - nat_death_1*R_1+V_1;
-        gamma_2*I_2 - nat_death_2*R_2+V_;
-        gamma_3*I_3 - nat_death_3*R_3;
-        gamma_4*I_4 - nat_death_4*R_4+100;
+        gamma_2*I_2 - nat_death_2*R_2+V_2;
+        gamma_3*I_3 - nat_death_3*R_3+V_3;
+        gamma_4*I_4 - nat_death_4*R_4+V_4;
         nat_death_1*(S_1+I_1+R_1)+((1-gamma_1*5)/5)*I_1;
         nat_death_2*(S_2+I_2+R_2)+((1-gamma_2*5)/5)*I_2;
         nat_death_3*(S_3+I_3+R_3)+((1-gamma_3*5)/5)*I_3;
@@ -72,7 +72,7 @@ N = 107000;
 y0 = [N*0.2; N*0.35; N*0.3; N*0.15; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
 
 % Solve the system of ODEs
-[t, y] = ode23(@myODE, tspan, y0);
+[t, y] = ode23(@ODE_equations, tspan, y0);
 
 % Plot the results
 figure;
