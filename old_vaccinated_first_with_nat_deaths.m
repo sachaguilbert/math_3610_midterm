@@ -30,10 +30,10 @@ function dydt = myODE(t, y)
     gamma_2 = 0.997/5;
     gamma_3 = 0.957/5;
     gamma_4 = 0.886/5;
-    nat_death_1 = 0; %0.0015/365; % natural death rate
-    nat_death_2 = 0; %0.0016/365;
-    nat_death_3 = 0; %0.0076/365;
-    nat_death_4 = 0; %0.0755/365;
+    nat_death_1 = 0.0015/365; % natural death rate
+    nat_death_2 = 0.0016/365;
+    nat_death_3 = 0.0076/365;
+    nat_death_4 = 0.0755/365;
     I = I_1 + I_2 + I_3 + I_4;
     V = 3000/30;
     V_1 = 0;
@@ -108,7 +108,7 @@ disp("Max I: " + max(I_sum))
 total_infected = R_sum(end) + I_sum(end) + D_sum(end) - 3000*(300/30);
 disp("Total I: " + total_infected)
 
-plot(t,sum_of_sums, 'Linewidth', 2, 'DisplayName', 'Sum of all graphs')
+% plot(t,sum_of_sums, 'Linewidth', 2, 'DisplayName', 'Sum of all graphs')
 plot(t,S_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all S')
 plot(t,I_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all I')
 plot(t,R_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all R')
