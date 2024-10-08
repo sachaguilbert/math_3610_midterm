@@ -52,10 +52,10 @@ function dydt = myODE(t, y)
         -1*beta_2*S_2 *(I)-1*nat_death_2*(S_2)-V_2;
         -1*beta_3*S_3 *(I)-1*nat_death_3*(S_3)-V_3;
         -1*beta_4*S_4 *(I)-1*nat_death_4*(S_4)-V_4;
-        beta_1*I*S_1 - gamma_1*I_1 - nat_death_1*I_1; 
-        beta_2*I*S_2 - gamma_2*I_2 - nat_death_2*I_2;
-        beta_3*I*S_3 - gamma_3*I_3 - nat_death_3*I_3;
-        beta_4*I*S_4 - gamma_4*I_4 - nat_death_4*I_4;
+        beta_1*I*S_1 - gamma_1*I_1 - nat_death_1*I_1 - ((1-gamma_1*5)/5)*I_1;
+        beta_2*I*S_2 - gamma_2*I_2 - nat_death_2*I_2 - ((1-gamma_2*5)/5)*I_2;
+        beta_3*I*S_3 - gamma_3*I_3 - nat_death_3*I_3 - ((1-gamma_3*5)/5)*I_3;
+        beta_4*I*S_4 - gamma_4*I_4 - nat_death_4*I_4 - ((1-gamma_4*5)/5)*I_4;
         gamma_1*I_1 - nat_death_1*R_1+V_1;
         gamma_2*I_2 - nat_death_2*R_2+V_2;
         gamma_3*I_3 - nat_death_3*R_3+V_3;
@@ -68,8 +68,10 @@ end
 
 % Main script
 tspan = [0 300];     % Time span
-N = 107000;
-y0 = [N*0.2; N*0.35; N*0.3; N*0.15; 25; 25; 25; 25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
+I_0 = 100;
+N_total = 107000;
+N_0 = N_total - I_0;
+y0 = [N_0*0.2; N_0*0.35; N_0*0.3; N_0*0.15; I_0*0.25; I_0*0.25; I_0*0.25; I_0*0.25; 0; 0; 0; 0; 0; 0; 0; 0];     % Initial conditions
 
 % Solve the system of ODEs
 [t, y] = ode23(@myODE, tspan, y0);
@@ -93,9 +95,15 @@ plot(t, y(:, 13), 'b-.', 'Linewidth', 2, 'DisplayName', 'D_1 (Dead 1)');
 plot(t, y(:, 14), 'g-.', 'Linewidth', 2, 'DisplayName', 'D_2 (Dead 2)');
 plot(t, y(:, 15), 'r-.', 'Linewidth', 2, 'DisplayName', 'D_3 (Dead 3)');
 plot(t, y(:, 16), 'c-.', 'Linewidth', 2, 'DisplayName', 'D_4 (Dead 4)');
+% Validation
+S_sum = y(:, 1) + y(:, 2) + y(:, 3) + y(:, 4);
+I_sum = y(:, 5) + y(:, 6) + y(:, 7) + y(:, 8);
+R_sum = y(:, 9) + y(:, 10) + y(:, 11) + y(:, 12);
+D_sum = y(:, 13) + y(:, 14) + y(:, 15) + y(:, 16);
+sum_of_sums = S_sum + I_sum + R_sum + D_sum;
+round(sum_of_sums - N_total) % This sum should be equal to 0
+% plot(t, sum_of_sums, 'c-.', 'Linewidth', 2, 'Sum of sums');
 hold off;
-
-y(:, 16)
 
 xlabel('Time');
 ylabel('Population');
