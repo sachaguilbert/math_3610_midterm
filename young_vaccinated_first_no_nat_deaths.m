@@ -1,6 +1,6 @@
 % SIR Model
 close all
-clc
+% clc
 clear
 
 % Define the system of ODEs in a separate file named myThreeODE.m
@@ -22,10 +22,10 @@ function dydt = myODE(t, y)
     D_3 = y(15);
     D_4 = y(16);
 
-    beta_1 = 2.5e-6; % infection likelihood 2.8e-4*2.5
-    beta_2 = 5e-6; %1.87e-5*2.5
-    beta_3 = 3e-6; %9.35e-6*2.5
-    beta_4 = 5e-7; % 4.67e-6*2.5
+    beta_1 = 2.5e-6*2.5;
+    beta_2 = 5e-6*2.5;
+    beta_3 = 3e-6*2.5;
+    beta_4 = 5e-7*2.5;
     gamma_1 = 0.9987/5; % recovery rate from Omega
     gamma_2 = 0.997/5;
     gamma_3 = 0.957/5;
@@ -53,10 +53,10 @@ function dydt = myODE(t, y)
         -1*beta_2*S_2 * I-1*nat_death_2*(S_2)-V_2;
         -1*beta_3*S_3 * I-1*nat_death_3*(S_3)-V_3;
         -1*beta_4*S_4 * I-1*nat_death_4*(S_4)-V_4;
-        beta_1*I*S_1 - gamma_1*I_1 - nat_death_1*I_1;
-        beta_2*I*S_2 - gamma_2*I_2 - nat_death_2*I_2;
-        beta_3*I*S_3 - gamma_3*I_3 - nat_death_3*I_3;
-        beta_4*I*S_4 - gamma_4*I_4 - nat_death_4*I_4;
+        beta_1*I*S_1 - gamma_1*I_1 - nat_death_1*I_1 - ((1-gamma_1*5)/5)*I_1;
+        beta_2*I*S_2 - gamma_2*I_2 - nat_death_2*I_2 - ((1-gamma_2*5)/5)*I_2;
+        beta_3*I*S_3 - gamma_3*I_3 - nat_death_3*I_3 - ((1-gamma_3*5)/5)*I_3;
+        beta_4*I*S_4 - gamma_4*I_4 - nat_death_4*I_4 - ((1-gamma_4*5)/5)*I_4;
         gamma_1*I_1 - nat_death_1*R_1+V_1;
         gamma_2*I_2 - nat_death_2*R_2+V_2;
         gamma_3*I_3 - nat_death_3*R_3+V_3;
@@ -72,7 +72,7 @@ tspan = [0 300]; % Time span
 I_0 = 100;
 N_total = 107000;
 N_0 = N_total - I_0;
-y0 = [N_0*0.2; N_0*0.35; N_0*0.3; N_0*0.15; I_0*0.25; I_0*0.25; I_0*0.25; I_0*0.25; 0; 0; 0; 0; 0; 0; 0; 0]; % Initial conditions
+y0 = [N_0*0.20; N_0*0.15; N_0*0.40; N_0*0.25; I_0*0.25; I_0*0.25; I_0*0.25; I_0*0.25; 0; 0; 0; 0; 0; 0; 0; 0]; % Initial conditions
 
 % Solve the system of ODEs
 [t, y] = ode23(@myODE, tspan, y0);
@@ -114,7 +114,7 @@ plot(t,I_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all I')
 plot(t,R_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all R')
 plot(t,D_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all D')
 % plot(t, y(:, 16), 'c-.', 'Linewidth', 2, 'DisplayName', 'D_4 (Dead 4)');
-round(sum_of_sums - N_total); % This sum should be equal to 0
+sum(round(sum_of_sums - N_total)) % This sum should be equal to 0
 % plot(t, sum_of_sums, 'c-.', 'Linewidth', 2, 'Sum of sums');
 hold off;
 

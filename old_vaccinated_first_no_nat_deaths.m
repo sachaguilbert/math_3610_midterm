@@ -1,6 +1,6 @@
 % SIR Model
 close all
-clc
+% clc
 clear
 
 % Define the system of ODEs in a separate file named myThreeODE.m
@@ -22,11 +22,11 @@ function dydt = myODE(t, y)
     D_3 = y(15);
     D_4 = y(16);
 
-    beta_1 = 2.5e-6; % infection likelihood 2.8e-4*2.5
-    beta_2 = 5e-6; %1.87e-5*2.5
-    beta_3 = 3e-6; %9.35e-6*2.5
-    beta_4 = 5e-7; % 4.67e-6*2.5
-    gamma_1 = 0.9987/5; % recovery rate from Omega
+    beta_1 = 2.5e-6*2.5; % Infection rates
+    beta_2 = 5e-6*2.5;
+    beta_3 = 3e-6*2.5;
+    beta_4 = 5e-7*2.5;
+    gamma_1 = 0.9987/5; % Recovery rates from Omega
     gamma_2 = 0.997/5;
     gamma_3 = 0.957/5;
     gamma_4 = 0.886/5;
@@ -113,7 +113,7 @@ plot(t,S_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all S')
 plot(t,I_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all I')
 plot(t,R_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all R')
 plot(t,D_sum, 'Linewidth', 2, 'DisplayName', 'Sum of all D')
-round(sum_of_sums - N_total);    % This sum should be equal to 0
+sum(round(sum_of_sums - N_total))    % This sum should be equal to 0
 % plot(t, sum_of_sums, 'c-.', 'Linewidth', 2, 'Sum of sums');
 hold off;
 
